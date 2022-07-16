@@ -21,13 +21,69 @@ public class CreateDots : MonoBehaviour
 
     void Start()
     {
+        Vector3 pos = gameObject.transform.position;
         switch (number)
         {
             case 1:
                 Instantiate(dot, gameObject.transform.position, rotation);
                 break;
+            case 2:
+                pos.z += radius / 2;
+                pos.x += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z -= radius;
+                pos.x -= radius;
+                Instantiate(dot, pos, rotation);
+                break;
             case 3:
-                Vector3 pos = gameObject.transform.position;
+                Instantiate(dot, pos, rotation);
+                pos.z += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z -= radius;
+                Instantiate(dot, pos, rotation);
+                break;
+            case 4:
+                pos.z += radius / 2;
+                pos.x += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z -= radius;
+                pos.x -= radius;
+                Instantiate(dot, pos, rotation);
+                
+                pos = gameObject.transform.position;
+                pos.z -= radius / 2;
+                pos.x += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z += radius;
+                pos.x -= radius;
+                Instantiate(dot, pos, rotation);
+                break;
+            case 5:
+                Instantiate(dot, pos, rotation);
+                pos.z += radius / 2;
+                pos.x += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z -= radius;
+                pos.x -= radius;
+                Instantiate(dot, pos, rotation);
+                
+                pos = gameObject.transform.position;
+                pos.z -= radius / 2;
+                pos.x += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z += radius;
+                pos.x -= radius;
+                Instantiate(dot, pos, rotation);
+                break;
+            case 6:
+                pos.x += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z += radius / 2;
+                Instantiate(dot, pos, rotation);
+                pos.z -= radius;
+                Instantiate(dot, pos, rotation);
+                pos = gameObject.transform.position;
+                pos.x -= radius / 2;
                 Instantiate(dot, pos, rotation);
                 pos.z += radius / 2;
                 Instantiate(dot, pos, rotation);

@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.HID;
 
 public class playerActions : MonoBehaviour
 {
-    private Rigidbody2D playerRigidbody;
+    private Rigidbody playerRigidbody;
     private PlayerInput playerInput;
     private InputActions playerInputActions;
     private Camera cam;
@@ -27,7 +27,7 @@ public class playerActions : MonoBehaviour
     private bool canShot = true;
     private void Awake()
     {
-        playerRigidbody = GetComponent<Rigidbody2D>();
+        playerRigidbody = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
         cam = Camera.main;
 
@@ -47,7 +47,7 @@ public class playerActions : MonoBehaviour
 
     private void addForce(Vector2 inputVector)
     {
-        playerRigidbody.AddForce(new Vector3(inputVector.x, inputVector.y, 0) * (speed), ForceMode2D.Force);
+        playerRigidbody.AddForce(new Vector3(inputVector.x, 0 , inputVector.y) * (speed), ForceMode.Force);
     }
     
     public void FixedUpdate()
@@ -56,7 +56,7 @@ public class playerActions : MonoBehaviour
 
         mousePos = cam.ScreenToWorldPoint(playerInputActions.Player.MousePos.ReadValue<Vector2>());
 
-        Vector2 lookDir = mousePos - playerRigidbody.position;
+        Vector2 lookDir = mousePos - new Vector2(playerRigidbody.position.x, playerRigidbody.position.z);
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
         weapon.rotation = Quaternion.Euler(0f,0f,angle);
 
