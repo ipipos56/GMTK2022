@@ -13,22 +13,26 @@ public class playerActions : MonoBehaviour
     private PlayerInput playerInput;
     private InputActions playerInputActions;
     private Camera cam;
-    private Vector2 mousePos;
+    private Vector3 mousePos;
     
     [SerializeField]
     private Transform weapon;
     [SerializeField] private float speed = 5f;
+    [SerializeField] private int damage = 1;
     [SerializeField] private GameObject bullet;
     [SerializeField] private Transform shotPoint;
+    private Animator animator;
 
     [SerializeField]
     private float timeBulletStart = 0.25f;
 
     private bool canShot = true;
+    private bool hitted = false;
     private void Awake()
     {
         playerRigidbody = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
+        animator = GetComponent<Animator>();
         cam = Camera.main;
 
         playerInputActions = new InputActions();
@@ -54,11 +58,17 @@ public class playerActions : MonoBehaviour
     {
         addForce(playerInputActions.Player.Movement.ReadValue<Vector2>());
 
-        mousePos = cam.ScreenToWorldPoint(playerInputActions.Player.MousePos.ReadValue<Vector2>());
+        /*
+        Ray ray = cam.ScreenPointToRay(playerInputActions.Player.MousePos.ReadValue<Vector2>());
+        if (Physics.Raycast(ray, out RaycastHit raycastHit))
+        {
+            mousePos = raycastHit.point;
+        }
 
-        Vector2 lookDir = mousePos - new Vector2(playerRigidbody.position.x, playerRigidbody.position.z);
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+        Vector3 lookDir = mousePos - playerRigidbody.position;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.z) * Mathf.Rad2Deg - 90f;
         weapon.rotation = Quaternion.Euler(0f,0f,angle);
+        */
 
     }
 
@@ -69,12 +79,15 @@ public class playerActions : MonoBehaviour
     
     private void Mouse_performed(InputAction.CallbackContext context)
     {
-        mousePos = cam.ScreenToWorldPoint(context.ReadValue<Vector2>());
+        //mousePos = cam.ScreenToWorldPoint(context.ReadValue<Vector2>());
     }
 
     private IEnumerator shoot()
     {
-        yield return new WaitForSeconds(timeBulletStart);
+        yield return new WaitForSeconds(0.25f);
+        animator.SetBool("Attack", false);
+        hitted = false;
+        yield return new WaitForSeconds(timeBulletStart - 0.25f);
         canShot = true;
     }
 
@@ -83,8 +96,18 @@ public class playerActions : MonoBehaviour
         if (context.performed && canShot)
         {
             canShot = false;
+            animator.SetBool("Attack", true);
             StartCoroutine(shoot());
-            Instantiate(bullet, shotPoint.position, weapon.rotation);
+            //Instantiate(bullet, shotPoint.position, weapon.rotation);
+        }
+    }
+
+    public void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.CompareTag("Enemy") && animator.GetBool("Attack") && !hitted)
+        {
+            hitted = true;
+            col.collider.gameObject.GetComponent<Enemy>().TakeDamage(damage);
         }
     }
 }
