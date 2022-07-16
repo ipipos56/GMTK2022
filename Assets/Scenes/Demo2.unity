@@ -319,8 +319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dot: {fileID: 8910751050978606887, guid: db759bb6f4164a6409aaca77c956096a, type: 3}
   zeroPoint: {fileID: 1269500568}
-  radius: 13.5
-  number: 1
+  radius: 17
+  number: 3
 --- !u!4 &1927863712
 Transform:
   m_ObjectHideFlags: 0

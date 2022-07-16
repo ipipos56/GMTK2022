@@ -29,9 +29,9 @@ public class CreateDots : MonoBehaviour
             case 3:
                 Vector3 pos = gameObject.transform.position;
                 Instantiate(dot, pos, rotation);
-                pos.x += radius / 2;
+                pos.z += radius / 2;
                 Instantiate(dot, pos, rotation);
-                pos.x -= radius;
+                pos.z -= radius;
                 Instantiate(dot, pos, rotation);
                 break;
             default:
